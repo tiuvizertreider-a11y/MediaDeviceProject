@@ -13,5 +13,16 @@ class MediaDevice(ABC):
         self.is_on = is_on
         self.current_volume = current_volume
 
+    # Абстрактные методы
+    @abstractmethod
+    def play(self):
+        pass
 
+    @abstractmethod
+    def stop(self):
+        pass
+
+    @abstractmethod
+    def get_device_type(self):
+        pass
 
