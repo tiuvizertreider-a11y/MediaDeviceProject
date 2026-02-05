@@ -27,3 +27,6 @@ class MediaDevice(ABC):
 
     def power_on(self):
         return 'Включить устройство'
+
+    def power_off(self):
+        return 'Выключить устройство'
