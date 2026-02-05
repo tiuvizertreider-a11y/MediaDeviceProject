@@ -30,3 +30,6 @@ class MediaDevice(ABC):
 
     def power_off(self):
         return 'Выключить устройство'
+
+    def charge(self):
+        return 'Зарядить устройство'
