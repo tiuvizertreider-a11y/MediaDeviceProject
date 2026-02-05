@@ -33,3 +33,6 @@ class MediaDevice(ABC):
 
     def charge(self):
         return 'Зарядить устройство'
+
+    def adjust_volume(self, level):
+        return 'Настроить громкость'
