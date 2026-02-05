@@ -5,7 +5,6 @@ class MediaDevice(ABC):
     MIN_VOLUME = 0           # Минимальная громкость (константа)
     BATTERY_WARNING_LEVEL = 20             # Уровень предупреждения о разрядке
     manufacturer_country = "Russia"        # Страна производства (может переопределяться в дочерних классах)
-
     def __init__(self, brand, model, battery_level, is_on, current_volume):
         self.brand = brand
         self.model = model
@@ -26,3 +25,5 @@ class MediaDevice(ABC):
     def get_device_type(self):
         pass
 
+    def power_on(self):
+        return 'Включить устройство'
