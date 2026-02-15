@@ -70,10 +70,20 @@ class MediaDevice(ABC):
 
     # Обычные методы класса (экземпляра)
     def power_on(self):
-        return 'Включить устройство'
+        """Включить устройство"""
+        if not self.is_on:
+            self.is_on = True
+            print(f'Устройство: {self.brand} {self.model} включено')
+        else:
+            print(f'Устройство: {self.brand} {self.model} уже включено')
 
     def power_off(self):
-        return 'Выключить устройство'
+        """Выключить устройство"""
+        if self.is_on:
+            self.is_on = False
+            print(f'Устройство: {self.brand} {self.model} выключено')
+        else:
+            print(f'Устройство: {self.brand} {self.model} уже выключено')
 
     def charge(self):
         return 'Зарядить устройство'
