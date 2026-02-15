@@ -78,7 +78,12 @@ class MediaDevice(ABC):
             print(f'Устройство: {self.brand} {self.model} уже включено')
 
     def power_off(self):
-        return 'Выключить устройство'
+        """Выключить устройство"""
+        if self.is_on:
+            self.is_on = False
+            print(f'Устройство: {self.brand} {self.model} включено')
+        else:
+            print(f'Устройство: {self.brand} {self.model} уже включено')
 
     def charge(self):
         return 'Зарядить устройство'
