@@ -29,7 +29,7 @@ class MediaDevice(ABC):
     # Сеттеры
     @battery_level.setter
     def battery_level(self, battery_level):
-        if 0 >= battery_level <= 100:
+        if 0 <= battery_level <= 100:
             self._battery_level = battery_level
         if battery_level <= 20:
             print('Предупреждение: уровень низкого заряда')
@@ -37,10 +37,10 @@ class MediaDevice(ABC):
 
     @current_volume.setter
     def current_volume(self, current_volume):
-        if self.MIN_VOLUME >= current_volume <= self.MAX_VOLUME:
+        if self.MIN_VOLUME <= current_volume <= self.MAX_VOLUME:
             self._current_volume = current_volume
         else:
-            print(f'_current_volume - не установилось')
+            print(f'{current_volume} - не установилось')
 
     # Абстрактные методы
     @abstractmethod
@@ -78,4 +78,3 @@ class MediaDevice(ABC):
     def adjust_volume(self, level):
         return 'Настроить громкость'
 
-device = MediaDevice('Iphone', 11, 22, 50)
