@@ -10,50 +10,37 @@ class MediaDevice(ABC):
         self.brand = brand
         self.model = model
         self.battery_level = battery_level
-        self.is_on = False
+        self._is_on = False
         self.current_volume = current_volume
 
     # Геттеры
     @property
-    def brand(self):
-        return self.__brand
-
-    @property
-    def model(self):
-        return self.__model
-
-    @property
     def battery_level(self):
-        return self.__battery_level
+        return self._battery_level
 
     @property
     def is_on(self):
-        return self.__is_on
+        return self._is_on
 
     @property
     def current_volume(self):
-        return self.__current_volume
+        return self._current_volume
 
     # Сеттеры
-    @brand.setter
-    def brand(self, brand):
-        self.__brand = brand
-
-    @model.setter
-    def model(self, model):
-        self.__model = model
-
     @battery_level.setter
     def battery_level(self, battery_level):
-        self.__battery_level = battery_level
+        if 0 <= battery_level <= 100:
+            self._battery_level = battery_level
+        if battery_level <= 20:
+            print('Предупреждение: уровень низкого заряда')
 
-    @is_on.setter
-    def is_on(self, is_on):
-        self.__is_on = is_on
 
     @current_volume.setter
     def current_volume(self, current_volume):
-        self.__current_volume = current_volume
+        if self.MIN_VOLUME <= current_volume <= self.MAX_VOLUME:
+            self._current_volume = current_volume
+        else:
+            print(f'{current_volume} - не установилось')
 
     # Абстрактные методы
     @abstractmethod
@@ -72,7 +59,7 @@ class MediaDevice(ABC):
     def power_on(self):
         """Включить устройство"""
         if not self.is_on:
-            self.is_on = True
+            self._is_on = True
             print(f'Устройство: {self.brand} {self.model} включено')
         else:
             print(f'Устройство: {self.brand} {self.model} уже включено')
@@ -80,7 +67,7 @@ class MediaDevice(ABC):
     def power_off(self):
         """Выключить устройство"""
         if self.is_on:
-            self.is_on = False
+            self._is_on = False
             print(f'Устройство: {self.brand} {self.model} выключено')
         else:
             print(f'Устройство: {self.brand} {self.model} уже выключено')
@@ -90,3 +77,4 @@ class MediaDevice(ABC):
 
     def adjust_volume(self, level):
         return 'Настроить громкость'
+
