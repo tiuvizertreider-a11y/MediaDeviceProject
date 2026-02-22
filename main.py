@@ -60,17 +60,15 @@ class MediaDevice(ABC):
         """Включить устройство"""
         if not self.is_on:
             self._is_on = True
-            print(f'Устройство: {self.brand} {self.model} включено')
         else:
-            print(f'Устройство: {self.brand} {self.model} уже включено')
+            raise ValueError(f'Устройство: {self.brand} {self.model} уже включено')
 
     def power_off(self):
         """Выключить устройство"""
         if self.is_on:
             self._is_on = False
-            print(f'Устройство: {self.brand} {self.model} выключено')
         else:
-            print(f'Устройство: {self.brand} {self.model} уже выключено')
+            raise ValueError(f'Устройство: {self.brand} {self.model} уже выключено')
 
     def charge(self):
         return 'Зарядить устройство'
