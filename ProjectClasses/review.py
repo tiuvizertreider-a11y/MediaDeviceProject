@@ -1,14 +1,15 @@
 class Review:
-    """
-    -----Класс хранение информации об обзоре устройства-----
-    :param title (str): Заголовок обзора
-    :param content (str): Текст обзора
-    :param date (datetime): Дата публикации (автоматически устанавливается в init)
-    :param pros (list): Список плюсов
-    :param cons (list): Список минусов
-    :param author (str): Автор обзора
-    """
+    """Модель Review для работы с отзывами"""
+
     def __init__(self, title: str, content: str, date, pros=None, cons=None, author='Эксперт'):
+        """
+        :param title (str): Заголовок обзора
+        :param content (str): Текст обзора
+        :param date (datetime): Дата публикации (автоматически устанавливается в init)
+        :param pros (list): Список плюсов
+        :param cons (list): Список минусов
+        :param author (str): Автор обзора
+        """
         self.__title = title
         self.__content = content
         self.__date = date
