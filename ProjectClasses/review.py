@@ -22,9 +22,9 @@ class Review:
         # Присваиваем через свойства
         self.title = title
         self.content = content
-        self.date = date if date is not None else datetime.now()
-        self.pros = pros.copy() if pros is not None else []
-        self.cons = cons.copy() if cons is not None else []
+        self.date = date
+        self.pros = pros
+        self.cons = cons
         self.author = author
 
     # Геттеры (для чтения всех атрибутов)
