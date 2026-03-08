@@ -32,37 +32,69 @@ class Review:
         """Возвращает название обзора"""
         return self.__title
 
+    @title.setter
+    def title(self, title: str) -> None:
+        """Устанавливает значение для названия обзора"""
+        self.__title = title
+
     @property
     def content(self) -> str:
         """Возвращает содержание обзора"""
         return self.__content
+
+    @content.setter
+    def content(self, content: str) -> None:
+        """Устанавливает значение для содержания обзора"""
+        self.__content = content
 
     @property
     def date(self) -> datetime:
         """Возвращает дату публикации"""
         return self.__date
 
+    @date.setter
+    def date(self, date: datetime) -> None:
+        """Устанавливает значение для даты публикации"""
+        self.__date = date
+
     @property
     def pros(self) -> list[str]:
         """Возвращает список плюсов"""
         return self.__pros.copy()
+
+    @pros.setter
+    def pros(self, pros: list[str]) -> None:
+        """Устанавливает значение для списка плюсов"""
+        self.__pros = pros
 
     @property
     def cons(self) -> list[str]:
         """Возвращает список минусов"""
         return self.__cons.copy()
 
+    @cons.setter
+    def cons(self, cons: list[str]) -> None:
+        """Устанавливает значение для списка минусов"""
+        self.__cons = cons
+
     @property
     def author(self) -> str:
         """Возвращает имя автора"""
         return self.__author
 
+    @author.setter
+    def author(self, author: str) -> None:
+        """Устанавливает значение для имени автора"""
+        self.__author = author
+
     def add_pro(self, pro_text: str) -> None:
         """
-        Добавляет плюс в список плюсов.
+        Добавляет плюс в список плюсов и проверяет на валидность типа.
         :param pro_text: Новый плюс.
         :return: None.
         """
+        if isinstance(pro_text, str):
+            print(f'pro_text является экземпляром класса str')
         if len(pro_text) <= 200:
             self.__pros.append(pro_text)
         else:
@@ -70,10 +102,12 @@ class Review:
 
     def add_con(self, con_text: str) -> None:
         """
-        Добавляет минус в список минусов.
+        Добавляет минус в список минусов и проверяет на валидность типа.
         :param con_text: Новый минус.
         :return: None.
         """
+        if isinstance(con_text, str):
+            print(f'con_text является экземпляром класса str')
         if len(con_text) <= 200:
             self.__cons.append(con_text)
         else:
@@ -81,10 +115,12 @@ class Review:
 
     def remove_pro(self, index: int) -> None:
         """
-        Удаляет плюс из списка плюсов по индексу.
+        Удаляет плюс из списка плюсов по индексу и проверяет на валидность типа.
         :param index: Индекс удаляемого элемента.
         :return: None.
         """
+        if isinstance(index, int):
+            print(f'index является экземпляром класса int')
         if -len(self.__pros) < index >= len(self.__pros):
             print('Индекс вне диапазона')
         else:
@@ -92,10 +128,12 @@ class Review:
 
     def remove_con(self, index: int) -> None:
         """
-        Удаляет минус из списка минусов по индексу.
+        Удаляет минус из списка минусов по индексу и проверяет на валидность типа.
         :param index: Индекс удаляемого элемента.
         :return: None.
         """
+        if isinstance(index, int):
+            print(f'index является экземпляром класса int')
         if -len(self.__cons) < index >= len(self.__cons):
             print('Индекс вне диапазона')
         else:
