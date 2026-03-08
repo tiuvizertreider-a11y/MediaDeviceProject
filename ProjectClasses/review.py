@@ -19,12 +19,13 @@ class Review:
         :param cons: Список недостатков.
                 Если передан список, создаётся его копия. Если None, создаётся пустой список.
         """
-        self.__title = title
-        self.__content = content
-        self.__date = date if date is not None else datetime.now()
-        self.__pros = pros.copy() if pros is not None else []
-        self.__cons = cons.copy() if cons is not None else []
-        self.__author = author
+        # Присваиваем через свойства
+        self.title = title
+        self.content = content
+        self.date = date if date is not None else datetime.now()
+        self.pros = pros.copy() if pros is not None else []
+        self.cons = cons.copy() if cons is not None else []
+        self.author = author
 
     # Геттеры (для чтения всех атрибутов)
     @property
@@ -34,8 +35,15 @@ class Review:
 
     @title.setter
     def title(self, title: str) -> None:
-        """Устанавливает значение для названия обзора"""
-        self.__title = title
+        """
+        Устанавливает значение для названия обзора.
+        :param title: Новое название обзора.
+        :return: None.
+        """
+        if isinstance(title, str):
+            self.__title = title
+        else:
+            print('Название обзора должно быть строкой')
 
     @property
     def content(self) -> str:
@@ -44,8 +52,15 @@ class Review:
 
     @content.setter
     def content(self, content: str) -> None:
-        """Устанавливает значение для содержания обзора"""
-        self.__content = content
+        """
+        Устанавливает значение для содержания обзора.
+        :param content: Новое содержание обзора.
+        :return: None.
+        """
+        if isinstance(content, str):
+            self.__content = content
+        else:
+            print('Содержание обзора должно быть строкой')
 
     @property
     def date(self) -> datetime:
@@ -53,9 +68,19 @@ class Review:
         return self.__date
 
     @date.setter
-    def date(self, date: datetime) -> None:
-        """Устанавливает значение для даты публикации"""
-        self.__date = date
+    def date(self, new_date: datetime | None) -> None:
+        """
+        Устанавливает значение для даты публикации.
+        Если будет передано None, то присвоит текущую дату.
+        :param new_date: Новая дата.
+        :return: None.
+        """
+        if new_date is None:
+            self.__date = datetime.now()
+        if isinstance(new_date, datetime):
+            self.__date = datetime
+        else:
+            print('Дата публикации должна быть datetime')
 
     @property
     def pros(self) -> list[str]:
@@ -63,9 +88,19 @@ class Review:
         return self.__pros.copy()
 
     @pros.setter
-    def pros(self, pros: list[str]) -> None:
-        """Устанавливает значение для списка плюсов"""
-        self.__pros = pros
+    def pros(self, pros: list[str] | None) -> None:
+        """
+        Устанавливает значение для списка плюсов.
+        Если будет передано None, то присвоит пустой список.
+        :param pros: Новый список плюсов.
+        :return: None.
+        """
+        if pros is None:
+            self.__pros = []
+        elif isinstance(pros, list):
+            self.__pros = pros.copy()
+        else:
+            print('Список плюсов должно быть списком')
 
     @property
     def cons(self) -> list[str]:
@@ -73,9 +108,19 @@ class Review:
         return self.__cons.copy()
 
     @cons.setter
-    def cons(self, cons: list[str]) -> None:
-        """Устанавливает значение для списка минусов"""
-        self.__cons = cons
+    def cons(self, cons: list[str] | None) -> None:
+        """
+        Устанавливает значение для списка минусов.
+        Если будет передано None, то присвоит пустой список.
+        :param cons: Новый список минусов.
+        :return: None.
+        """
+        if cons is None:
+            self.__cons = []
+        elif isinstance(cons, list):
+            self.__cons = cons.copy()
+        else:
+            print('Список минусов должно быть списком')
 
     @property
     def author(self) -> str:
@@ -85,7 +130,10 @@ class Review:
     @author.setter
     def author(self, author: str) -> None:
         """Устанавливает значение для имени автора"""
-        self.__author = author
+        if isinstance(author, str):
+            self.__author = author
+        else:
+            print('Имя автора должно быть строкой')
 
     def add_pro(self, pro_text: str) -> None:
         """
@@ -93,12 +141,16 @@ class Review:
         :param pro_text: Новый плюс.
         :return: None.
         """
-        if isinstance(pro_text, str):
-            print(f'pro_text является экземпляром класса str')
-        if len(pro_text) <= 200:
-            self.__pros.append(pro_text)
-        else:
+        if not isinstance(pro_text, str):
+            print(f'pro_text должен быть str')
+
+        elif not pro_text.strip():
+            print('pro_text не может быть пустой строкой.')
+
+        elif len(pro_text) > 200:
             print(f'Текст плюса слишком длинный')
+        else:
+            self.__pros.append(pro_text)
 
     def add_con(self, con_text: str) -> None:
         """
@@ -106,12 +158,16 @@ class Review:
         :param con_text: Новый минус.
         :return: None.
         """
-        if isinstance(con_text, str):
-            print(f'con_text является экземпляром класса str')
-        if len(con_text) <= 200:
-            self.__cons.append(con_text)
-        else:
+        if not isinstance(con_text, str):
+            print(f'con_text должен быть str')
+
+        elif not con_text.strip():
+            print('con_text не может быть пустой строкой.')
+
+        elif len(con_text) > 200:
             print(f'Текст минуса слишком длинный')
+        else:
+            self.__cons.append(con_text)
 
     def remove_pro(self, index: int) -> None:
         """
@@ -119,9 +175,9 @@ class Review:
         :param index: Индекс удаляемого элемента.
         :return: None.
         """
-        if isinstance(index, int):
-            print(f'index является экземпляром класса int')
-        if -len(self.__pros) < index >= len(self.__pros):
+        if not isinstance(index, int):
+            print(f'index должен быть int')
+        elif -len(self.__pros) < index >= len(self.__pros):
             print('Индекс вне диапазона')
         else:
             del self.__pros[index]
@@ -132,9 +188,9 @@ class Review:
         :param index: Индекс удаляемого элемента.
         :return: None.
         """
-        if isinstance(index, int):
-            print(f'index является экземпляром класса int')
-        if -len(self.__cons) < index >= len(self.__cons):
+        if not isinstance(index, int):
+            print(f'index должен быть int')
+        elif -len(self.__cons) < index >= len(self.__cons):
             print('Индекс вне диапазона')
         else:
             del self.__cons[index]
