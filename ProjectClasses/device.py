@@ -146,3 +146,9 @@ class Device(ABC):
         """Возвращает отчет об объекте."""
         return (f'Device(brand={self.brand}, model={self.model}, category={self.category},'
                 f'year={self.year}, image={self.image}, specs={self.specs}, review={self.review})')
+
+    def __str__(self) -> str:
+        """Возвращает строковое представление объекта."""
+        return (f'Info device:\n\tbrand={self.brand}\n\tmodel={self.model}'
+                f'\n\tcategory={self.category}\n\tyear={self.year}'
+                f'\n\timage={self.image}\n\tspecs={self.specs}\n\treview={self.review}')
