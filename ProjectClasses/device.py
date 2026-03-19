@@ -141,3 +141,8 @@ class Device(ABC):
     @abstractmethod
     def get_short_description(self) -> str:
         pass
+
+    def __repr__(self) -> str:
+        """Возвращает отчет об объекте."""
+        return (f'Device(brand={self.brand}, model={self.model}, category={self.category},'
+                f'year={self.year}, image={self.image}, specs={self.specs}, review={self.review})')
