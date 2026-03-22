@@ -152,3 +152,23 @@ class Device(ABC):
         return (f'Info device:\n\tbrand={self.brand}\n\tmodel={self.model}'
                 f'\n\tcategory={self.category}\n\tyear={self.year}'
                 f'\n\timage={self.image}\n\tspecs={self.specs}\n\treview={self.review}')
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        """
+        Создаёт экземпляр класса Device из словаря.
+        :param data: Словарь с ключами: brand, model,
+            category (обязательные), year, image, specs,
+            review (опционально).
+        :return: None.
+        """
+        cls.brand = data['brand']
+        cls.model = data['model']
+        cls.category = data['category']
+        cls.year = data.get('year', datetime.today().year)
+        cls.image = data.get('image')
+        cls.specs = data.get('specs')
+        cls.review = data.get('review')
+
+        if not isinstance(data, dict):
+            print(f'data должен быть словарем!')
