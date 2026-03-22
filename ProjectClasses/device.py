@@ -1,10 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from pyexpat import model
-
-from unicodedata import category
-
 from ProjectClasses.review import Review
 
 
