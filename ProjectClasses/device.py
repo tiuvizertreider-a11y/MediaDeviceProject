@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+from pyexpat import model
+
+from unicodedata import category
+
 from ProjectClasses.review import Review
 
 
@@ -154,21 +158,30 @@ class Device(ABC):
                 f'\n\timage={self.image}\n\tspecs={self.specs}\n\treview={self.review}')
 
     @classmethod
-    def from_dict(cls, data: dict):
+    def from_dict(cls, data: dict) -> Device | None:
         """
         Создаёт экземпляр класса Device из словаря.
         :param data: Словарь с ключами: brand, model,
             category (обязательные), year, image, specs,
             review (опционально).
-        :return: None.
+        :return: Возвращает устройство или None.
         """
-        cls.brand = data['brand']
-        cls.model = data['model']
-        cls.category = data['category']
-        cls.year = data.get('year', datetime.today().year)
-        cls.image = data.get('image')
-        cls.specs = data.get('specs')
-        cls.review = data.get('review')
-
         if not isinstance(data, dict):
             print(f'data должен быть словарем!')
+            return None
+
+        base_keys = ['brand', 'model', 'category']
+        for key in base_keys:
+            if key not in data:
+                print(f'Ключ должен быть из списка базовых ключей.')
+                return None
+
+        return cls(
+            brand=data['brand'],
+            model=model['model'],
+            category=category['category'],
+            year=data.get('year'),
+            image=data.get('image'),
+            specs=data.get('specs'),
+            review=data.get('review')
+        )
