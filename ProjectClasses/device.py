@@ -178,8 +178,8 @@ class Device(ABC):
 
         return cls(
             brand=data['brand'],
-            model=model['model'],
-            category=category['category'],
+            model=data['model'],
+            category=data['category'],
             year=data.get('year'),
             image=data.get('image'),
             specs=data.get('specs'),
