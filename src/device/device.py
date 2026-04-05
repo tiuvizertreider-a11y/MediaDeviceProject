@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from ProjectClasses.review import Review
+from src.review.review import Review
 
 
 class Device(ABC):
+    # TODO: НАПИСАТЬ ДОКУМЕНТАЦИЮ КЛАССУ!
+
     ALLOWED_CATEGORIES = ["Смартфоны", "Наушники", "Планшеты", "Умные часы"]   # Список для проверки.
     def __init__(self, brand: str, model: str, category: str,
                  year: int | None = None, image: str | None = None,
@@ -58,19 +60,16 @@ class Device(ABC):
         return self._year
 
     @year.setter
-    def year(self, new_year: int | None) -> None:
+    def year(self, new_year: int) -> None:
         """
         Устанавливает значение для года выпуска устройства.
-        Если передано None, то установится текущий год.
         :param new_year: Год выпуска устройства.
         :return: None.
         """
-        if new_year is None:
-            self._year = datetime.today().year
-        elif not isinstance(new_year, int):
-            print('Год выпуска устройства должен быть int | None')
-        elif new_year < 1900 or new_year > datetime.today().year:
-            print('Год выпуска устройства должен быть между 1900 года и настоящим временем')
+        if not isinstance(new_year, int):
+            print('Год выпуска устройства должен быть int')
+        elif new_year < 1990 or new_year > datetime.today().year:
+            print('Год выпуска устройства должен быть между 1990 года и настоящим временем')
         else:
             self._year = new_year
 
@@ -128,7 +127,7 @@ class Device(ABC):
         :param new_review: Новый обзор.
         :return: None.
         """
-        if new_review is None or isinstance(new_review, Review):
+        if isinstance(new_review, (Review, type(None))):
             self._review = new_review
         else:
             print('Новый обзор должен быть классом Review или None')
@@ -136,16 +135,18 @@ class Device(ABC):
 
     @abstractmethod
     def get_device_type(self) -> str:
+        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ!
         pass
 
     @abstractmethod
     def get_short_description(self) -> str:
+        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ!
         pass
 
     def __repr__(self) -> str:
         """Возвращает отчет об объекте."""
-        return (f'Device(brand={self.brand}, model={self.model}, category={self.category},'
-                f'year={self.year}, image={self.image}, specs={self.specs}, review={self.review})')
+        return (f'Device(brand={self.brand!r}, model={self.model!r}, category={self.category!r},'
+                f'year={self.year}, image={self.image!r}, specs={self.specs}, review={self.review})')
 
     def __str__(self) -> str:
         """Возвращает строковое представление объекта."""
@@ -172,6 +173,10 @@ class Device(ABC):
                 print(f'Ключ должен быть из списка базовых ключей.')
                 return None
 
+        review = None
+        if 'review' in data:
+            review = Review.from_dict(data['review'])
+
         return cls(
             brand=data['brand'],
             model=data['model'],
@@ -179,5 +184,5 @@ class Device(ABC):
             year=data.get('year'),
             image=data.get('image'),
             specs=data.get('specs'),
-            review=data.get('review')
+            review=review
         )

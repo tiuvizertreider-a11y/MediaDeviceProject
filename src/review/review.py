@@ -143,10 +143,8 @@ class Review:
         """
         if not isinstance(pro_text, str):
             print(f'pro_text должен быть str')
-
         elif not pro_text.strip():
             print('pro_text не может быть пустой строкой.')
-
         elif len(pro_text) > 200:
             print(f'Текст плюса слишком длинный')
         else:
@@ -160,10 +158,8 @@ class Review:
         """
         if not isinstance(con_text, str):
             print(f'con_text должен быть str')
-
         elif not con_text.strip():
             print('con_text не может быть пустой строкой.')
-
         elif len(con_text) > 200:
             print(f'Текст минуса слишком длинный')
         else:
@@ -194,3 +190,20 @@ class Review:
             print('Индекс вне диапазона')
         else:
             del self.__cons[index]
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Review:
+        if not isinstance(data, dict):
+            print("data должен быть dict!")
+
+        if "title" not in data or "content" not in data:
+            print("Пропущены обязательные ключи: title, content.")
+
+        return cls(title=data['title'],
+            content=data['content'],
+            date=data.get('date'),
+            pros=data.get('pros'),
+            cons=data.get('cons'),
+            author=data.get('author'),)
+
+
