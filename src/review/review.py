@@ -4,11 +4,11 @@ from src.review.status_review import StatusReview
 
 
 class Review:
-    """Модель Review для работы с отзывами"""
+    """Модель Review для работы с отзывами."""
 
     def __init__(self, title: str,
                  content: str,
-                 status : StatusReview = StatusReview.PUBLISHED,
+                 status: StatusReview = StatusReview.PUBLISHED,
                  date: datetime=None,
                  pros: list[str]=None,
                  cons: list[str]=None,
@@ -18,7 +18,8 @@ class Review:
 
         :param title:   Заголовок отзыва. Не может быть пустой строкой.
         :param content: Содержание (текст) отзыва.
-        TODO: НАПИСАТЬ ПРО СТАТУС
+        :param status:  Статус обзора. Статус должен быть
+                один из класса StatusReview.
         :param author:  Имя автора. По умолчанию 'Эксперт'.
         :param date: Дата и время создания. Если не указана,
                 будет установлена текущая дата и время.
@@ -39,7 +40,7 @@ class Review:
     # Геттеры (для чтения всех атрибутов)
     @property
     def title(self) -> str:
-        """Возвращает название обзора"""
+        """Возвращает название обзора."""
         return self.__title
 
     @title.setter
@@ -52,11 +53,11 @@ class Review:
         if isinstance(title, str):
             self.__title = title
         else:
-            print('Название обзора должно быть строкой')
+            print('Название обзора должно быть строкой.')
 
     @property
     def content(self) -> str:
-        """Возвращает содержание обзора"""
+        """Возвращает содержание обзора."""
         return self.__content
 
     @content.setter
@@ -69,16 +70,20 @@ class Review:
         if isinstance(content, str):
             self.__content = content
         else:
-            print('Содержание обзора должно быть строкой')
+            print('Содержание обзора должно быть строкой.')
 
     @property
     def status(self) -> StatusReview:
-        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ
+        """Возвращает статус обзора."""
         return self._status
 
     @status.setter
     def status(self, status: StatusReview | str) -> None:
-        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ
+        """
+        Инициализирует и проверяет на корректность статуса.
+        :param status: Должен быть одним из класса StatusReview.
+        :return: None.
+        """
         if status in StatusReview:
             self._status = status
         else:
@@ -87,7 +92,7 @@ class Review:
 
     @property
     def date(self) -> datetime:
-        """Возвращает дату публикации"""
+        """Возвращает дату публикации."""
         return self.__date
 
     @date.setter
@@ -103,11 +108,11 @@ class Review:
         if isinstance(new_date, datetime):
             self.__date = datetime
         else:
-            print('Дата публикации должна быть datetime')
+            print('Дата публикации должна быть datetime.')
 
     @property
     def pros(self) -> list[str]:
-        """Возвращает список плюсов"""
+        """Возвращает список плюсов."""
         return self.__pros.copy()
 
     @pros.setter
@@ -123,11 +128,11 @@ class Review:
         elif isinstance(pros, list):
             self.__pros = pros.copy()
         else:
-            print('Список плюсов должно быть списком')
+            print('Список плюсов должно быть списком.')
 
     @property
     def cons(self) -> list[str]:
-        """Возвращает список минусов"""
+        """Возвращает список минусов."""
         return self.__cons.copy()
 
     @cons.setter
@@ -143,20 +148,24 @@ class Review:
         elif isinstance(cons, list):
             self.__cons = cons.copy()
         else:
-            print('Список минусов должно быть списком')
+            print('Список минусов должно быть списком.')
 
     @property
     def author(self) -> str:
-        """Возвращает имя автора"""
+        """Возвращает имя автора."""
         return self.__author
 
     @author.setter
     def author(self, author: str) -> None:
-        """Устанавливает значение для имени автора"""
+        """
+        Устанавливает значение для имени автора.
+        :param author: Автор обзора. По умолчанию = Эксперт.
+        :return: None.
+        """
         if isinstance(author, str):
             self.__author = author
         else:
-            print('Имя автора должно быть строкой')
+            print('Имя автора должно быть строкой.')
 
     def add_pro(self, pro_text: str) -> None:
         """
@@ -165,11 +174,11 @@ class Review:
         :return: None.
         """
         if not isinstance(pro_text, str):
-            print(f'pro_text должен быть str')
+            print(f'pro_text должен быть str.')
         elif not pro_text.strip():
             print('pro_text не может быть пустой строкой.')
         elif len(pro_text) > 200:
-            print(f'Текст плюса слишком длинный')
+            print(f'Текст плюса слишком длинный.')
         else:
             self.__pros.append(pro_text)
 
@@ -180,11 +189,11 @@ class Review:
         :return: None.
         """
         if not isinstance(con_text, str):
-            print(f'con_text должен быть str')
+            print(f'con_text должен быть str.')
         elif not con_text.strip():
             print('con_text не может быть пустой строкой.')
         elif len(con_text) > 200:
-            print(f'Текст минуса слишком длинный')
+            print(f'Текст минуса слишком длинный.')
         else:
             self.__cons.append(con_text)
 
@@ -195,9 +204,9 @@ class Review:
         :return: None.
         """
         if not isinstance(index, int):
-            print(f'index должен быть int')
+            print(f'index должен быть int.')
         elif -len(self.__pros) < index >= len(self.__pros):
-            print('Индекс вне диапазона')
+            print('Индекс вне диапазона.')
         else:
             del self.__pros[index]
 
@@ -208,15 +217,20 @@ class Review:
         :return: None.
         """
         if not isinstance(index, int):
-            print(f'index должен быть int')
+            print(f'index должен быть int.')
         elif -len(self.__cons) < index >= len(self.__cons):
-            print('Индекс вне диапазона')
+            print('Индекс вне диапазона.')
         else:
             del self.__cons[index]
 
     @classmethod
     def from_dict(cls, data: dict) -> Review:
-        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ
+        """
+        Создает экземпляр класса из словаря data.
+        :param data: Словарь, из которого впоследствии
+                мы создаем экземпляр класса Review.
+        :return: Review.
+        """
         if not isinstance(data, dict):
             print("data должен быть dict!")
 
@@ -228,7 +242,8 @@ class Review:
             date=data.get('date'),
             pros=data.get('pros'),
             cons=data.get('cons'),
-            author=data.get('author'),)
+            author=data.get('author')
+                   )
 
 
     # TODO: Создать магические методы: __repr__ и __str__.
