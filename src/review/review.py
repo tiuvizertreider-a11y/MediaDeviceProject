@@ -1,16 +1,24 @@
 from datetime import datetime
 
+from src.review.status_review import StatusReview
+
 
 class Review:
     """Модель Review для работы с отзывами"""
 
-    def __init__(self, title: str, content: str, date: datetime=None,
-                 pros: list[str]=None, cons: list[str]=None, author: str='Эксперт'):
+    def __init__(self, title: str,
+                 content: str,
+                 status : StatusReview = StatusReview.PUBLISHED,
+                 date: datetime=None,
+                 pros: list[str]=None,
+                 cons: list[str]=None,
+                 author: str='Эксперт'):
         """
         Инициализирует объект отзыва.
 
         :param title:   Заголовок отзыва. Не может быть пустой строкой.
         :param content: Содержание (текст) отзыва.
+        TODO: НАПИСАТЬ ПРО СТАТУС
         :param author:  Имя автора. По умолчанию 'Эксперт'.
         :param date: Дата и время создания. Если не указана,
                 будет установлена текущая дата и время.
@@ -22,6 +30,7 @@ class Review:
         # Присваиваем через свойства
         self.title = title
         self.content = content
+        self.status = status
         self.date = date
         self.pros = pros
         self.cons = cons
@@ -61,6 +70,20 @@ class Review:
             self.__content = content
         else:
             print('Содержание обзора должно быть строкой')
+
+    @property
+    def status(self) -> StatusReview:
+        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ
+        return self._status
+
+    @status.setter
+    def status(self, status: StatusReview | str) -> None:
+        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ
+        if status in StatusReview:
+            self._status = status
+        else:
+            print(f"Некорректный статус: {status}! Возможные статусы: "
+                  f"{", ".join(StatusReview)}.")
 
     @property
     def date(self) -> datetime:
@@ -193,6 +216,7 @@ class Review:
 
     @classmethod
     def from_dict(cls, data: dict) -> Review:
+        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ
         if not isinstance(data, dict):
             print("data должен быть dict!")
 
@@ -207,3 +231,4 @@ class Review:
             author=data.get('author'),)
 
 
+    # TODO: Создать магические методы: __repr__ и __str__.
