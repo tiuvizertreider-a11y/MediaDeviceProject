@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from src.review.status_review import StatusReview
+from src.review.review_exceptions import InvalidStatusReviewError
 
 
 class Review:
@@ -48,12 +49,13 @@ class Review:
         """
         Устанавливает значение для названия обзора.
         :param title: Новое название обзора.
+        :raises ValueError: Если title не str.
         :return: None.
         """
-        if isinstance(title, str):
-            self.__title = title
-        else:
-            print('Название обзора должно быть строкой.')
+        if not isinstance(title, str):
+            raise ValueError('title должен быть str.')
+        
+        self.__title = title
 
     @property
     def content(self) -> str:
@@ -65,12 +67,13 @@ class Review:
         """
         Устанавливает значение для содержания обзора.
         :param content: Новое содержание обзора.
+        :raises ValueError: Если content не str.
         :return: None.
         """
-        if isinstance(content, str):
-            self.__content = content
-        else:
-            print('Содержание обзора должно быть строкой.')
+        if not isinstance(content, str):
+            raise ValueError('content должен быть str')
+
+        self.__content = content
 
     @property
     def status(self) -> StatusReview:
@@ -84,11 +87,11 @@ class Review:
         :param status: Должен быть одним из класса StatusReview.
         :return: None.
         """
-        if status in StatusReview:
-            self._status = status
-        else:
-            print(f"Некорректный статус: {status}! Возможные статусы: "
-                  f"{", ".join(StatusReview)}.")
+        try:
+            self._status = StatusReview(status)
+        except ValueError as ex:
+            cor_status = StatusReview.to_list()
+            raise InvalidStatusReviewError(status, cor_status) from ex
 
     @property
     def date(self) -> datetime:
@@ -224,7 +227,7 @@ class Review:
             del self.__cons[index]
 
     @classmethod
-    def from_dict(cls, data: dict) -> Review:
+    def from_dict(cls, data: dict) -> Review | None:
         """
         Создает экземпляр класса из словаря data.
         :param data: Словарь, из которого впоследствии
@@ -233,9 +236,11 @@ class Review:
         """
         if not isinstance(data, dict):
             print("data должен быть dict!")
+            return None
 
         if "title" not in data or "content" not in data:
             print("Пропущены обязательные ключи: title, content.")
+            return None
 
         return cls(title=data['title'],
             content=data['content'],
@@ -243,7 +248,7 @@ class Review:
             pros=data.get('pros'),
             cons=data.get('cons'),
             author=data.get('author')
-                   )
+            )
 
 
     # TODO: Создать магические методы: __repr__ и __str__.
