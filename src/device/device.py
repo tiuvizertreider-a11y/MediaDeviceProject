@@ -5,7 +5,7 @@ from src.review.review import Review
 
 
 class Device(ABC):
-    # TODO: НАПИСАТЬ ДОКУМЕНТАЦИЮ КЛАССУ!
+    """Модель устройства, на которого будет записан подробный обзор."""
 
     ALLOWED_CATEGORIES = ["Смартфоны", "Наушники", "Планшеты", "Умные часы"]   # Список для проверки.
     def __init__(self, brand: str, model: str, category: str,
@@ -50,7 +50,7 @@ class Device(ABC):
         :return: None.
         """
         if category not in self.ALLOWED_CATEGORIES:
-            print('Категория должна быть одна из списка разрешенных категорий')
+            print('Категория должна быть одна из списка разрешенных категорий.')
         else:
             self._category = category
 
@@ -67,9 +67,9 @@ class Device(ABC):
         :return: None.
         """
         if not isinstance(new_year, int):
-            print('Год выпуска устройства должен быть int')
+            print('Год выпуска устройства должен быть int.')
         elif new_year < 1990 or new_year > datetime.today().year:
-            print('Год выпуска устройства должен быть между 1990 года и настоящим временем')
+            print('Год выпуска устройства должен быть между 1990 года и настоящим временем.')
         else:
             self._year = new_year
 
@@ -90,7 +90,7 @@ class Device(ABC):
         if new_image is None:
             self._image = '/'
         elif not isinstance(new_image, str):
-            print('Новое изображение должно быть строкой')
+            print('Новое изображение должно быть строкой.')
         else:
             self._image = new_image
 
@@ -110,7 +110,7 @@ class Device(ABC):
         if new_specs is None:
             self._specs = {}
         elif not isinstance(new_specs, dict):
-            print('Список характеристик должен быть словарем')
+            print('Список характеристик должен быть словарем.')
         else:
             self._specs = new_specs.copy()
 
@@ -130,17 +130,17 @@ class Device(ABC):
         if isinstance(new_review, (Review, type(None))):
             self._review = new_review
         else:
-            print('Новый обзор должен быть классом Review или None')
+            print('Новый обзор должен быть классом Review или None.')
 
 
     @abstractmethod
     def get_device_type(self) -> str:
-        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ!
+        """Возвращает строку с типом устройства."""
         pass
 
     @abstractmethod
     def get_short_description(self) -> str:
-        # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ!
+        """Возвращает краткое описание устройства."""
         pass
 
     def __repr__(self) -> str:

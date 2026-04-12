@@ -10,6 +10,6 @@ class StatusReview(StrEnum):
 
     @staticmethod
     def to_list() -> list[str]:
-        # TODO: ДОКУМЕНТАЦИЯ!
+        """Возвращает значения StatusReview."""
         return [i.value for i in StatusReview]
 

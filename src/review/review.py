@@ -71,7 +71,7 @@ class Review:
         :return: None.
         """
         if not isinstance(content, str):
-            raise ValueError('content должен быть str')
+            raise ValueError('content должен быть str.')
 
         self.__content = content
 
@@ -250,5 +250,13 @@ class Review:
             author=data.get('author')
             )
 
+    def __repr__(self) -> str:
+        """Возвращает отчет об объекте."""
+        return (f'Review(title={self.title!r}, content={self.content!r}, status={self.status},'
+                f'date={self.date}, pros={self.pros}, cons={self.cons}, author={self.author})')
 
-    # TODO: Создать магические методы: __repr__ и __str__.
+    def __str__(self) -> str:
+        """Возвращает строковое представление объекта."""
+        return (f'Info review:\n\ttitle={self.title}\n\tcontent={self.content}'
+                f'\n\tstatus={self.status}\n\tdate={self.date}'
+                f'\n\tpros={self.pros}\n\tcons={self.cons}\n\tauthor={self.author}')
