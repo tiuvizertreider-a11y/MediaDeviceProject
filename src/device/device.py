@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+from src.device.category_device import CategoryDevice
+from src.device.device_exceptions import InvalidCategoryDeviceError
 from src.review.review import Review
 
 
@@ -8,9 +10,13 @@ class Device(ABC):
     """Модель устройства, на которого будет записан подробный обзор."""
 
     ALLOWED_CATEGORIES = ["Смартфоны", "Наушники", "Планшеты", "Умные часы"]   # Список для проверки.
-    def __init__(self, brand: str, model: str, category: str,
-                 year: int | None = None, image: str | None = None,
-                 specs: dict | None = None, review: Review | None = None):
+    def __init__(self, brand: str,
+                 model: str,
+                 category: CategoryDevice = CategoryDevice.SMARTPHONE,
+                 year: int | None = None,
+                 image: str | None = None,
+                 specs: dict | None = None,
+                 review: Review | None = None):
         """
         Инициализирует объект устройства.
 
@@ -46,13 +52,14 @@ class Device(ABC):
     def category(self, category: str) -> None:
         """
         Устанавливает значение для категории устройства.
-        :param category: Категория из списка разрешенных категорий.
+        :param category: Должна быть одна из класса CategoryDevice.
         :return: None.
         """
-        if category not in self.ALLOWED_CATEGORIES:
-            print('Категория должна быть одна из списка разрешенных категорий.')
-        else:
-            self._category = category
+        try:
+            self._category = CategoryDevice(category)
+        except ValueError as ex:
+            cor_status = CategoryDevice.to_list()
+            raise InvalidCategoryDeviceError(category, cor_status) from ex
 
     @property
     def year(self) -> int:
