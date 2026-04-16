@@ -12,4 +12,3 @@ class StatusReview(StrEnum):
     def to_list() -> list[str]:
         """Возвращает значения StatusReview."""
         return [i.value for i in StatusReview]
-

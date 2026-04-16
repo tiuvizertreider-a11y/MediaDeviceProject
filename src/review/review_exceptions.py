@@ -21,7 +21,7 @@ class EmptyFieldReviewError(ReviewError):
 
 
 class InvalidStatusReviewError(ReviewError):
-    # TODO: РЕАЛИЗОВАТЬ ДОКУМЕНТАЦИЮ! 🐞
+    """Ошибка некорректного статуса обзора."""
 
     def __init__(self, status: str, correct_status: list[str]):
         self.status = status
