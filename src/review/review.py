@@ -1,19 +1,35 @@
 from datetime import datetime
+from typing import TypedDict, Required
 
 from src.review.status_review import StatusReview
-from src.review.review_exceptions import InvalidStatusReviewError
+from src.review.review_exceptions import InvalidStatusReviewError, EmptyFieldReviewError, \
+    IncorrectLengthFiledReviewError, MissingRequiredFieldReviewError
+
+
+class ReviewData(TypedDict, total=False):
+    """🍩✅⛹️☠️⬆️🧐"""
+    # TODO: ДОКУМЕНТАЦИЯ
+    title: Required[str]
+    content: Required[str]
+    status: StatusReview | str
+    date: datetime | None
+    pros: list[str] | None
+    cons: list[str] | None
+    author: str
 
 
 class Review:
     """Модель Review для работы с отзывами."""
 
-    def __init__(self, title: str,
+    def __init__(self,
+                 title: str,
                  content: str,
-                 status: StatusReview = StatusReview.PUBLISHED,
+                 status: StatusReview | str = StatusReview.PUBLISHED,
                  date: datetime=None,
                  pros: list[str]=None,
                  cons: list[str]=None,
-                 author: str='Эксперт'):
+                 author: str='Эксперт',
+                 ):
         """
         Инициализирует объект отзыва.
 
@@ -78,7 +94,7 @@ class Review:
     @property
     def status(self) -> StatusReview:
         """Возвращает статус обзора."""
-        return self._status
+        return self.__status
 
     @status.setter
     def status(self, status: StatusReview | str) -> None:
@@ -88,7 +104,7 @@ class Review:
         :return: None.
         """
         try:
-            self._status = StatusReview(status)
+            self.__status = StatusReview(status)
         except ValueError as ex:
             cor_status = StatusReview.to_list()
             raise InvalidStatusReviewError(status, cor_status) from ex
@@ -108,10 +124,10 @@ class Review:
         """
         if new_date is None:
             self.__date = datetime.now()
-        if isinstance(new_date, datetime):
+        elif isinstance(new_date, datetime):
             self.__date = datetime
         else:
-            print('Дата публикации должна быть datetime.')
+            raise ValueError('Дата публикации должна быть datetime.')
 
     @property
     def pros(self) -> list[str]:
@@ -131,7 +147,7 @@ class Review:
         elif isinstance(pros, list):
             self.__pros = pros.copy()
         else:
-            print('Список плюсов должно быть списком.')
+            raise ValueError('Список плюсов должно быть list.')
 
     @property
     def cons(self) -> list[str]:
@@ -151,7 +167,7 @@ class Review:
         elif isinstance(cons, list):
             self.__cons = cons.copy()
         else:
-            print('Список минусов должно быть списком.')
+            raise ValueError('Список минусов должно быть списком.')
 
     @property
     def author(self) -> str:
@@ -165,40 +181,42 @@ class Review:
         :param author: Автор обзора. По умолчанию = Эксперт.
         :return: None.
         """
-        if isinstance(author, str):
-            self.__author = author
-        else:
-            print('Имя автора должно быть строкой.')
+        if not isinstance(author, str):
+            raise ValueError('Имя автора должно быть строкой.')
 
-    def add_pro(self, pro_text: str) -> None:
+        self.__author = author
+
+
+    def add_pro(self, pro_text: str, max_length: int=200) -> None:
         """
         Добавляет плюс в список плюсов и проверяет на валидность типа.
         :param pro_text: Новый плюс.
-        :return: None.
+        :param max_length: Максимальная длина поля.
         """
-        if not isinstance(pro_text, str):
-            print(f'pro_text должен быть str.')
-        elif not pro_text.strip():
-            print('pro_text не может быть пустой строкой.')
-        elif len(pro_text) > 200:
-            print(f'Текст плюса слишком длинный.')
-        else:
-            self.__pros.append(pro_text)
+        self.__validate_text(pro_text, "pro_text", max_length)
+        self.__pros.append(pro_text)
 
-    def add_con(self, con_text: str) -> None:
+    def add_con(self, con_text: str, max_length: int=200) -> None:
         """
         Добавляет минус в список минусов и проверяет на валидность типа.
         :param con_text: Новый минус.
+        :param max_length: Максимальная длина поля.
         :return: None.
         """
-        if not isinstance(con_text, str):
-            print(f'con_text должен быть str.')
-        elif not con_text.strip():
-            print('con_text не может быть пустой строкой.')
-        elif len(con_text) > 200:
-            print(f'Текст минуса слишком длинный.')
-        else:
-            self.__cons.append(con_text)
+        self.__validate_text(con_text, "con_text", max_length)
+        self.__pros.append(con_text)
+
+    @staticmethod
+    def __validate_text(text: str, field_name: str, max_length: int):
+        # TODO: ДОКУМЕНТАЦИЯ
+        if not isinstance(text, str):
+            raise ValueError(f'{field_name} должен быть str.')
+
+        if not text.strip():
+            raise EmptyFieldReviewError(field_name)
+
+        if len(text) > max_length:
+            raise IncorrectLengthFiledReviewError(field_name, len(text), max_length)
 
     def remove_pro(self, index: int) -> None:
         """
@@ -206,12 +224,10 @@ class Review:
         :param index: Индекс удаляемого элемента.
         :return: None.
         """
-        if not isinstance(index, int):
-            print(f'index должен быть int.')
-        elif -len(self.__pros) < index >= len(self.__pros):
-            print('Индекс вне диапазона.')
-        else:
+        try:
             del self.__pros[index]
+        except IndexError as ex:
+            raise IndexError(f"Удаление по некорректному индексу: {index}.") from ex
 
     def remove_con(self, index: int) -> None:
         """
@@ -219,31 +235,31 @@ class Review:
         :param index: Индекс удаляемого элемента.
         :return: None.
         """
-        if not isinstance(index, int):
-            print(f'index должен быть int.')
-        elif -len(self.__cons) < index >= len(self.__cons):
-            print('Индекс вне диапазона.')
-        else:
+        try:
             del self.__cons[index]
+        except IndexError as ex:
+            raise IndexError(f"Удаление по некорректному индексу: {index}.") from ex
 
     @classmethod
-    def from_dict(cls, data: dict) -> Review | None:
+    def from_dict(cls, data: ReviewData, base_keys: list[str]) -> Review | None:
         """
         Создает экземпляр класса из словаря data.
         :param data: Словарь, из которого впоследствии
                 мы создаем экземпляр класса Review.
+        :param base_keys: Обязательный ключи словаря.
         :return: Review.
         """
-        if not isinstance(data, dict):
-            print("data должен быть dict!")
-            return None
+        if not isinstance(data, type(ReviewData)):
+            raise ValueError("data должен быть dict!")
 
-        if "title" not in data or "content" not in data:
-            print("Пропущены обязательные ключи: title, content.")
-            return None
+        for key in base_keys:
+            if key not in data:
+                raise MissingRequiredFieldReviewError(key)
 
-        return cls(title=data['title'],
+        return cls(
+            title=data['title'],
             content=data['content'],
+            status=data.get('status', StatusReview.PUBLISHED),
             date=data.get('date'),
             pros=data.get('pros'),
             cons=data.get('cons'),

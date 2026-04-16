@@ -1,6 +1,3 @@
-from src.device.category_device import CategoryDevice
-
-
 class DeviceError(Exception):
     """Базовое исключение для всех ошибок, связанных с Device."""
     pass
