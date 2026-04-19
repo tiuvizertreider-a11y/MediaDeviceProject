@@ -12,4 +12,3 @@ class CategoryDevice(StrEnum):
     def to_list() -> list[str]:
         """Возвращает список значений CategoryDevice."""
         return [i.value for i in CategoryDevice]
-    

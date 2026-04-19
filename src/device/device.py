@@ -93,10 +93,11 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
+        if not isinstance(new_image, str):
+            raise ValueError('new_image должно быть строкой.')
+
         if new_image is None:
             self._image = '/'
-        elif not isinstance(new_image, str):
-            raise ValueError('new_image должно быть строкой.')
         else:
             self._image = new_image
 
@@ -182,6 +183,7 @@ class Device(ABC):
         :param name: Ключ характеристики.
         :return: None.
         """
+        # TODO: Исправить на следующем занятии
         if name in self._specs:
             del self._specs[name]
         else:
@@ -196,11 +198,11 @@ class Device(ABC):
             review (опционально).
         :return: Возвращает устройство или None.
         """
+        # TODO: Разобрать на следующем занятии
         if not isinstance(data, dict):
             raise ValueError(f'data должен быть словарем!')
             return None
 
-        base_keys = ['brand', 'model', 'category']
         for key in base_keys:
             if key not in data:
                 raise ValueError(f'Ключ должен быть из списка базовых ключей.')
