@@ -85,6 +85,7 @@ class Review:
         """
         Инициализирует и проверяет на корректность статуса.
         :param status: Должен быть одним из класса StatusReview.
+        :raises InvalidStatusReviewError: Если статус некорректен.
         :return: None.
         """
         try:
@@ -235,10 +236,10 @@ class Review:
         :return: Review.
         """
         if not isinstance(data, dict):
-            print("data должен быть dict!")
+            print('data должен быть dict!')
             return None
 
-        if "title" not in data or "content" not in data:
+        if 'title' not in data or 'content' not in data:
             print("Пропущены обязательные ключи: title, content.")
             return None
 
