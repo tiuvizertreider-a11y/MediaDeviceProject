@@ -34,7 +34,13 @@ class InvalidStatusReviewError(ReviewError):
         )
 
 class IncorrectLengthFieldReviewError(ReviewError):
-    # TODO: ДОКУМЕНТАЦИЯ
+    """
+    Ошибка некорректной длины поля обзора.
+
+    :param field_name: Имя поля, переданное пользователем.
+    :param length: Текущая длина поля.
+    :param max_length: Максимальная длина поля.
+    """
     def __init__(self, field_name: str, length: int, max_length: int):
         self.field_name = field_name
         self.length = length
@@ -46,7 +52,11 @@ class IncorrectLengthFieldReviewError(ReviewError):
 
 
 class MissingRequiredFieldReviewError(ReviewError):
-    # TODO: ДОКУМЕНТАЦИЯ
+    """
+    Ошибка пропущенного обязательного поля обзора.
+
+    :param field_name: Имя поля, переданное пользователем.
+    """
     def __init__(self, field_name: str):
         self.field_name = field_name
         super().__init__(

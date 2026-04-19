@@ -7,8 +7,21 @@ from src.review.review_exceptions import InvalidStatusReviewError, EmptyFieldRev
 
 
 class ReviewData(TypedDict, total=False):
-    """🍩✅⛹️☠️⬆️🧐"""
-    # TODO: ДОКУМЕНТАЦИЯ
+    """
+    Аннотационный класс ReviewData.
+
+    :param title: Заголовок обзора. Обязательное-Required поле.
+    :param content: Содержание обзора. Обязательное-Required поле.
+    :param status: Статус обзора. Статус должен быть
+            один из класса StatusReview.
+    :param date: Дата и время создания. Если не указана,
+            будет установлена текущая дата и время.
+    :param pros: Список преимуществ.
+            Если передан список, создаётся его копия. Если None, создаётся пустой список.
+    :param cons: Список недостатков.
+            Если передан список, создаётся его копия. Если None, создаётся пустой список.
+    :param author: Имя автора. По умолчанию 'Эксперт'.
+    """
     title: Required[str]
     content: Required[str]
     status: StatusReview | str
@@ -37,13 +50,13 @@ class Review:
         :param content: Содержание (текст) отзыва.
         :param status:  Статус обзора. Статус должен быть
                 один из класса StatusReview.
-        :param author:  Имя автора. По умолчанию 'Эксперт'.
         :param date: Дата и время создания. Если не указана,
                 будет установлена текущая дата и время.
         :param pros: Список преимуществ.
                 Если передан список, создаётся его копия. Если None, создаётся пустой список.
         :param cons: Список недостатков.
                 Если передан список, создаётся его копия. Если None, создаётся пустой список.
+        :param author: Имя автора. По умолчанию 'Эксперт'.
         """
         # Присваиваем через свойства
         self.title = title
@@ -101,7 +114,8 @@ class Review:
         """
         Инициализирует и проверяет на корректность статуса.
         :param status: Должен быть одним из класса StatusReview.
-        :raises InvalidStatusReviewError: TODO: описать
+        :raises InvalidStatusReviewError: Если переданный пользователем
+                статус, не из класса StatusReview.
         :return: None.
         """
         try:
@@ -121,7 +135,7 @@ class Review:
         Устанавливает значение для даты публикации.
         Если будет передано None, то присвоит текущую дату.
         :param new_date: Новая дата.
-        :raises ValueError: TODO: Описать
+        :raises ValueError: Если дата публикации не datetime.
         :return: None.
         """
         if new_date is None:
@@ -142,7 +156,7 @@ class Review:
         Устанавливает значение для списка плюсов.
         Если будет передано None, то присвоит пустой список.
         :param pros: Новый список плюсов.
-        :raises ValueError: TODO: Описать
+        :raises ValueError: Если список плюсов не list.
         :return: None.
         """
         if pros is None:
@@ -163,7 +177,7 @@ class Review:
         Устанавливает значение для списка минусов.
         Если будет передано None, то присвоит пустой список.
         :param cons: Новый список минусов.
-        :raises ValueError: TODO: Описать
+        :raises ValueError: Если список минусов не list.
         :return: None.
         """
         if cons is None:
@@ -171,7 +185,7 @@ class Review:
         elif isinstance(cons, list):
             self.__cons = cons.copy()
         else:
-            raise ValueError('Список минусов должно быть списком.')
+            raise ValueError('Список минусов должно быть list.')
 
     @property
     def author(self) -> str:
@@ -183,11 +197,11 @@ class Review:
         """
         Устанавливает значение для имени автора.
         :param author: Автор обзора. По умолчанию = Эксперт.
-        :raises ValueError: TODO: Описать
+        :raises ValueError: Если имя автора не str.
         :return: None.
         """
         if not isinstance(author, str):
-            raise ValueError('Имя автора должно быть строкой.')
+            raise ValueError('Имя автора должно быть str.')
 
         self.__author = author
 
@@ -197,9 +211,9 @@ class Review:
         Добавляет плюс в список плюсов и проверяет на валидность типа.
         :param pro_text: Новый плюс.
         :param max_length: Максимальная длина поля.
-        :raises ValueError: TODO: ОПИСАНИЕ
-        :raises EmptyFieldReviewError: TODO: ОПИСАНИЕ
-        :raises IncorrectLengthFiledReviewError: TODO: ОПИСАНИЕ
+        :raises ValueError: Если field_name не str.
+        :raises EmptyFieldReviewError: Если field_name пустое.
+        :raises IncorrectLengthFieldReviewError: Если некорректная длина field_name.
         :return: None.
         """
         self.__validate_text(pro_text, "pro_text", max_length)
@@ -210,9 +224,9 @@ class Review:
         Добавляет минус в список минусов и проверяет на валидность типа.
         :param con_text: Новый минус.
         :param max_length: Максимальная длина поля.
-        :raises ValueError: TODO: ОПИСАНИЕ
-        :raises EmptyFieldReviewError: TODO: ОПИСАНИЕ
-        :raises IncorrectLengthFiledReviewError: TODO: ОПИСАНИЕ
+        :raises ValueError: Если field_name не str.
+        :raises EmptyFieldReviewError: Если field_name пустое.
+        :raises IncorrectLengthFieldReviewError: Если некорректная длина field_name.
         :return: None.
         """
         self.__validate_text(con_text, "con_text", max_length)
@@ -220,7 +234,17 @@ class Review:
 
     @staticmethod
     def __validate_text(text: str, field_name: str, max_length: int):
-        # TODO: ДОКУМЕНТАЦИЯ
+        """
+        Проверка на валидность текста.
+
+        :param text: Текст, переданный пользователем.
+        :param field_name: Имя поля, переданное пользователем.
+        :param max_length: Максимальная длина поля.
+        :raises ValueError: Если field_name не str.
+        :raises EmptyFieldReviewError: Если field_name пустое.
+        :raises IncorrectLengthFieldReviewError: Если некорректная длина field_name.
+        :return: None.
+        """
         if not isinstance(text, str):
             raise ValueError(f'{field_name} должен быть str.')
 
@@ -234,7 +258,7 @@ class Review:
         """
         Удаляет плюс из списка плюсов по индексу и проверяет на валидность типа.
         :param index: Индекс удаляемого элемента.
-        :raises IndexError: TODO: Описать
+        :raises IndexError: Если передан некорректный индекс.
         :return: None.
         """
         try:
@@ -246,7 +270,7 @@ class Review:
         """
         Удаляет минус из списка минусов по индексу и проверяет на валидность типа.
         :param index: Индекс удаляемого элемента.
-        :raises IndexError: TODO: Описать
+        :raises IndexError: Если передан некорректный индекс.
         :return: None.
         """
         try:
@@ -261,8 +285,8 @@ class Review:
         :param data: Словарь, из которого впоследствии
                 мы создаем экземпляр класса Review.
         :param base_keys: Обязательный ключи словаря.
-        :raises ValueError: TODO: Описать
-        :raises MissingRequiredFieldReviewError: TODO: Описать
+        :raises ValueError: Если data не dict.
+        :raises MissingRequiredFieldReviewError: Если пропущено обязательное поле обзора.
         :return: Review.
         """
         if not isinstance(data, dict):

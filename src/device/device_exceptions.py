@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class DeviceError(Exception):
     """Базовое исключение для всех ошибок, связанных с Device."""
     pass
@@ -38,8 +41,15 @@ class InvalidYearDeviceError(DeviceError):
     """
     Ошибка некорректного года устройства.
 
-    :param year: Год, который мы получили от пользователя.
-    :param correct_year: Допустимые года значений.
+    :param year: Год, который был передан пользователем.
+    :param min_year: Минимальный возможный год устройства.
+    :param max_year: Максимальный возможный год устройства.
     """
-
-    pass
+    def __init__(self, year: int, min_year: int = 1990, max_year: int = datetime.now().year):
+        self.year = year
+        self.min_year = min_year
+        self.max_year = max_year
+        super().__init__(
+            f"Недопустимый год устройства: {self.year}. Допустимые года: "
+            f"От 1990 до нынешнего."
+        )
