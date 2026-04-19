@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Any
 
 from src.device.category_device import CategoryDevice
-from src.device.year_device import YearDevice
 from src.device.device_exceptions import InvalidCategoryDeviceError, InvalidYearDeviceError
 from src.review.review import Review
 
@@ -76,11 +75,7 @@ class Device(ABC):
         :raises: InvalidYearDeviceError.
         :return: None.
         """
-        try:
-            self._year = YearDevice(new_year).value
-        except ValueError as ex:
-            cor_year = YearDevice.to_list()
-            raise InvalidYearDeviceError(new_year, cor_year) from ex
+        pass
 
 
     @property

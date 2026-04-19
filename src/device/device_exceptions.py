@@ -1,5 +1,3 @@
-from typing import Iterable
-
 from src.device.category_device import CategoryDevice
 
 
@@ -47,10 +45,4 @@ class InvalidYearDeviceError(DeviceError):
     :param correct_year: Допустимые года значений.
     """
 
-    def __init__(self, year: int, correct_year: Iterable[str]):
-        self.year = year
-        self.correct_year = correct_year
-        super().__init__(
-            f"Недопустимый год устройства: {self.year}. Допустимые значения: "
-            f"{", ".join(correct_year)}."
-        )
+    pass
