@@ -70,12 +70,18 @@ class Device(ABC):
     @year.setter
     def year(self, new_year: int) -> None:
         """
+        TODO: Кастомное исключение реализовать.
         Устанавливает значение для года выпуска устройства.
         :param new_year: Год выпуска устройства.
         :raises: InvalidYearDeviceError.
         :return: None.
         """
-        pass
+        if not isinstance(new_year, int):
+            print('Год выпуска устройства должен быть int.')
+        elif new_year < 1990 or new_year > datetime.today().year:
+            print('Год выпуска устройства должен быть между 1990 года и настоящим временем.')
+        else:
+            self._year = new_year
 
 
     @property
@@ -115,10 +121,11 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
+        if not isinstance(new_specs, dict):
+            raise ValueError('new_specs должно быть словарем.')
+
         if new_specs is None:
             self._specs = {}
-        elif not isinstance(new_specs, dict):
-            raise ValueError('new_specs должно быть словарем.')
         else:
             self._specs = new_specs.copy()
 
@@ -172,7 +179,8 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
-        if name in self._specs:
+        #TODO: Исправить на следующем занятии
+        if name not in self._specs:
             raise ValueError(f'Ключ: {name} уже существует, и будет перезаписана.')
         self._specs[name] = value
 
@@ -190,7 +198,7 @@ class Device(ABC):
             raise ValueError(f'Характеристика: {name} не найдена.')
 
     @classmethod
-    def from_dict(cls, data: dict) -> Device | None:
+    def from_dict(cls, data: dict, base_keys: list[str]) -> Device | None:
         """
         Создаёт экземпляр класса Device из словаря.
         :param data: Словарь с ключами: brand, model,
@@ -201,12 +209,10 @@ class Device(ABC):
         # TODO: Разобрать на следующем занятии
         if not isinstance(data, dict):
             raise ValueError(f'data должен быть словарем!')
-            return None
 
         for key in base_keys:
             if key not in data:
                 raise ValueError(f'Ключ должен быть из списка базовых ключей.')
-                return None
 
         review = None
         if 'review' in data:

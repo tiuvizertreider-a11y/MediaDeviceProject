@@ -3,10 +3,10 @@ from enum import StrEnum
 
 class CategoryDevice(StrEnum):
     """Инициализирует категорию устройства."""
-    SMARTPHONE = "Смартфоны"
-    HEADPHONE = "Наушники"
-    TABLET = "Планшеты"
-    SMARTWATCH = "Умные часы"
+    SMARTPHONE = "smartphone"
+    HEADPHONE = "headphone"
+    TABLET = "tablet"
+    SMARTWATCH = "smartwatch"
 
     @staticmethod
     def to_list() -> list[str]:
