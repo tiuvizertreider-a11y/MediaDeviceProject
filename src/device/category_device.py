@@ -1,5 +1,5 @@
 from enum import StrEnum
-
+from typing import Callable
 
 
 class CategoryDevice(StrEnum):
@@ -10,7 +10,7 @@ class CategoryDevice(StrEnum):
     SMARTWATCH = "Умные часы"
 
     @staticmethod
-    def to_list() -> list[str]:
-        """Возвращает значения CategoryDevice."""
+    def to_list() -> list[Callable[[], str]]:
+        """Возвращает список значений CategoryDevice."""
         return [i.value for i in CategoryDevice]
     
