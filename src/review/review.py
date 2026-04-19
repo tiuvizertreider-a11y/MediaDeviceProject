@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import TypedDict, Required
+from typing import TypedDict, Required, Self
 
 from src.review.status_review import StatusReview
 from src.review.review_exceptions import InvalidStatusReviewError, EmptyFieldReviewError, \
@@ -101,6 +101,7 @@ class Review:
         """
         Инициализирует и проверяет на корректность статуса.
         :param status: Должен быть одним из класса StatusReview.
+        :raises InvalidStatusReviewError: TODO: описать
         :return: None.
         """
         try:
@@ -120,6 +121,7 @@ class Review:
         Устанавливает значение для даты публикации.
         Если будет передано None, то присвоит текущую дату.
         :param new_date: Новая дата.
+        :raises ValueError: TODO: Описать
         :return: None.
         """
         if new_date is None:
@@ -140,6 +142,7 @@ class Review:
         Устанавливает значение для списка плюсов.
         Если будет передано None, то присвоит пустой список.
         :param pros: Новый список плюсов.
+        :raises ValueError: TODO: Описать
         :return: None.
         """
         if pros is None:
@@ -241,7 +244,7 @@ class Review:
             raise IndexError(f"Удаление по некорректному индексу: {index}.") from ex
 
     @classmethod
-    def from_dict(cls, data: ReviewData, base_keys: list[str]) -> Review | None:
+    def from_dict(cls, data: ReviewData, base_keys: list[str]) -> Self:
         """
         Создает экземпляр класса из словаря data.
         :param data: Словарь, из которого впоследствии
