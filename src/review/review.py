@@ -3,7 +3,7 @@ from typing import TypedDict, Required, Self
 
 from src.review.status_review import StatusReview
 from src.review.review_exceptions import InvalidStatusReviewError, EmptyFieldReviewError, \
-    IncorrectLengthFiledReviewError, MissingRequiredFieldReviewError
+    IncorrectLengthFieldReviewError, MissingRequiredFieldReviewError
 
 
 class ReviewData(TypedDict, total=False):
@@ -163,6 +163,7 @@ class Review:
         Устанавливает значение для списка минусов.
         Если будет передано None, то присвоит пустой список.
         :param cons: Новый список минусов.
+        :raises ValueError: TODO: Описать
         :return: None.
         """
         if cons is None:
@@ -182,6 +183,7 @@ class Review:
         """
         Устанавливает значение для имени автора.
         :param author: Автор обзора. По умолчанию = Эксперт.
+        :raises ValueError: TODO: Описать
         :return: None.
         """
         if not isinstance(author, str):
@@ -195,6 +197,10 @@ class Review:
         Добавляет плюс в список плюсов и проверяет на валидность типа.
         :param pro_text: Новый плюс.
         :param max_length: Максимальная длина поля.
+        :raises ValueError: TODO: ОПИСАНИЕ
+        :raises EmptyFieldReviewError: TODO: ОПИСАНИЕ
+        :raises IncorrectLengthFiledReviewError: TODO: ОПИСАНИЕ
+        :return: None.
         """
         self.__validate_text(pro_text, "pro_text", max_length)
         self.__pros.append(pro_text)
@@ -204,6 +210,9 @@ class Review:
         Добавляет минус в список минусов и проверяет на валидность типа.
         :param con_text: Новый минус.
         :param max_length: Максимальная длина поля.
+        :raises ValueError: TODO: ОПИСАНИЕ
+        :raises EmptyFieldReviewError: TODO: ОПИСАНИЕ
+        :raises IncorrectLengthFiledReviewError: TODO: ОПИСАНИЕ
         :return: None.
         """
         self.__validate_text(con_text, "con_text", max_length)
@@ -219,12 +228,13 @@ class Review:
             raise EmptyFieldReviewError(field_name)
 
         if len(text) > max_length:
-            raise IncorrectLengthFiledReviewError(field_name, len(text), max_length)
+            raise IncorrectLengthFieldReviewError(field_name, len(text), max_length)
 
     def remove_pro(self, index: int) -> None:
         """
         Удаляет плюс из списка плюсов по индексу и проверяет на валидность типа.
         :param index: Индекс удаляемого элемента.
+        :raises IndexError: TODO: Описать
         :return: None.
         """
         try:
@@ -236,6 +246,7 @@ class Review:
         """
         Удаляет минус из списка минусов по индексу и проверяет на валидность типа.
         :param index: Индекс удаляемого элемента.
+        :raises IndexError: TODO: Описать
         :return: None.
         """
         try:
@@ -250,9 +261,11 @@ class Review:
         :param data: Словарь, из которого впоследствии
                 мы создаем экземпляр класса Review.
         :param base_keys: Обязательный ключи словаря.
+        :raises ValueError: TODO: Описать
+        :raises MissingRequiredFieldReviewError: TODO: Описать
         :return: Review.
         """
-        if not isinstance(data, type(ReviewData)):
+        if not isinstance(data, dict):
             raise ValueError("data должен быть dict!")
 
         for key in base_keys:

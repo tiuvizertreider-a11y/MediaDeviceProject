@@ -18,7 +18,12 @@ class EmptyFieldReviewError(ReviewError):
 
 
 class InvalidStatusReviewError(ReviewError):
-    """Ошибка некорректного статуса обзора."""
+    """
+    Ошибка некорректного статуса обзора.
+
+    :param status: Статус, переданный пользователем.
+    :param correct_status: Список корректных значений.
+    """
 
     def __init__(self, status: str, correct_status: list[str]):
         self.status = status
@@ -28,7 +33,7 @@ class InvalidStatusReviewError(ReviewError):
             f"{", ".join(correct_status)}."
         )
 
-class IncorrectLengthFiledReviewError(ReviewError):
+class IncorrectLengthFieldReviewError(ReviewError):
     # TODO: ДОКУМЕНТАЦИЯ
     def __init__(self, field_name: str, length: int, max_length: int):
         self.field_name = field_name
