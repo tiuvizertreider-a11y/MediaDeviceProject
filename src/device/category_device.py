@@ -1,7 +1,6 @@
 from enum import StrEnum
 
 
-
 class CategoryDevice(StrEnum):
     """Инициализирует категорию устройства."""
     SMARTPHONE = "Смартфоны"
@@ -11,6 +10,6 @@ class CategoryDevice(StrEnum):
 
     @staticmethod
     def to_list() -> list[str]:
-        """Возвращает значения CategoryDevice."""
+        """Возвращает список значений CategoryDevice."""
         return [i.value for i in CategoryDevice]
     

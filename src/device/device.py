@@ -2,14 +2,13 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 
 from src.device.category_device import CategoryDevice
-from src.device.device_exceptions import InvalidCategoryDeviceError
+from src.device.device_exceptions import InvalidCategoryDeviceError, InvalidYearDeviceError
 from src.review.review import Review
 
 
 class Device(ABC):
     """Модель устройства, на которого будет записан подробный обзор."""
 
-    ALLOWED_CATEGORIES = ["Смартфоны", "Наушники", "Планшеты", "Умные часы"]   # Список для проверки.
     def __init__(self, brand: str,
                  model: str,
                  category: CategoryDevice = CategoryDevice.SMARTPHONE,
@@ -53,6 +52,7 @@ class Device(ABC):
         """
         Устанавливает значение для категории устройства.
         :param category: Должна быть одна из класса CategoryDevice.
+        :raises: InvalidCategoryDeviceError.
         :return: None.
         """
         try:
@@ -71,14 +71,11 @@ class Device(ABC):
         """
         Устанавливает значение для года выпуска устройства.
         :param new_year: Год выпуска устройства.
+        :raises: InvalidYearDeviceError.
         :return: None.
         """
-        if not isinstance(new_year, int):
-            print('Год выпуска устройства должен быть int.')
-        elif new_year < 1990 or new_year > datetime.today().year:
-            print('Год выпуска устройства должен быть между 1990 года и настоящим временем.')
-        else:
-            self._year = new_year
+        pass
+
 
     @property
     def image(self) -> str:
@@ -92,12 +89,13 @@ class Device(ABC):
         Если передано None, то подставится ссылка, с фотокарточкой
             по умолчанию.
         :param new_image: Изображение устройства.
+        :raises: ValueError.
         :return: None.
         """
         if new_image is None:
             self._image = '/'
         elif not isinstance(new_image, str):
-            print('Новое изображение должно быть строкой.')
+            raise ValueError('new_image должно быть строкой.')
         else:
             self._image = new_image
 
@@ -112,12 +110,13 @@ class Device(ABC):
         Устанавливает значение для характеристик устройства.
         Если передано None, то создаст пустой словарь {}.
         :param new_specs: Новые характеристики.
+        :raises: ValueError.
         :return: None.
         """
         if new_specs is None:
             self._specs = {}
         elif not isinstance(new_specs, dict):
-            print('Список характеристик должен быть словарем.')
+            raise ValueError('new_specs должно быть словарем.')
         else:
             self._specs = new_specs.copy()
 
@@ -132,12 +131,13 @@ class Device(ABC):
         Устанавливает значение для обзора на устройство.
         Если передано None, то атрибут _review инициализируется.
         :param new_review: Новый обзор.
+        :raises: ValueError.
         :return: None.
         """
-        if isinstance(new_review, (Review, type(None))):
-            self._review = new_review
-        else:
-            print('Новый обзор должен быть классом Review или None.')
+        if not isinstance(new_review, (Review, type(None))):
+            raise ValueError('Новый обзор должен быть классом Review или None.')
+
+        self._review = new_review
 
 
     @abstractmethod
@@ -171,13 +171,13 @@ class Device(ABC):
         :return: Возвращает устройство или None.
         """
         if not isinstance(data, dict):
-            print(f'data должен быть словарем!')
+            raise ValueError(f'data должен быть словарем!')
             return None
 
         base_keys = ['brand', 'model', 'category']
         for key in base_keys:
             if key not in data:
-                print(f'Ключ должен быть из списка базовых ключей.')
+                raise ValueError(f'Ключ должен быть из списка базовых ключей.')
                 return None
 
         review = None
