@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from typing import Any
 
 from src.device.category_device import CategoryDevice
 from src.device.device_exceptions import InvalidCategoryDeviceError, InvalidYearDeviceError
@@ -160,6 +161,31 @@ class Device(ABC):
         return (f'Info device:\n\tbrand={self.brand}\n\tmodel={self.model}'
                 f'\n\tcategory={self.category}\n\tyear={self.year}'
                 f'\n\timage={self.image}\n\tspecs={self.specs}\n\treview={self.review}')
+
+    def add_spec(self, name: str, value: Any) -> None:
+        """
+        Добавляет или обновляет характеристику в словаре _specs по ключу name со значением value.
+
+        :param name: Ключ характеристики.
+        :param value: Значение характеристики.
+        :raises: ValueError.
+        :return: None.
+        """
+        if name in self._specs:
+            raise ValueError(f'Ключ: {name} уже существует, и будет перезаписана.')
+        self._specs[name] = value
+
+    def remove_spec(self, name: str) -> None:
+        """
+        Удаляет характеристику по ключу name.
+
+        :param name: Ключ характеристики.
+        :return: None.
+        """
+        if name in self._specs:
+            del self._specs[name]
+        else:
+            raise ValueError(f'Характеристика: {name} не найдена.')
 
     @classmethod
     def from_dict(cls, data: dict) -> Device | None:
