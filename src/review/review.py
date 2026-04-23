@@ -159,7 +159,7 @@ class Review:
         :raises ValueError: Если список плюсов не list.
         :return: None.
         """
-        if not isinstance(pros, (list, type(None)):
+        if not isinstance(pros, (list, type(None))):
             raise ValueError('Список плюсов должно быть list.')
         
         if pros is None:
@@ -182,7 +182,7 @@ class Review:
         :raises ValueError: Если список минусов не list.
         :return: None.
         """
-        if not isinstance(cons, (list, type(None)):
+        if not isinstance(cons, (list, type(None))):
             raise ValueError('Список минусов должно быть list.')
         
         if cons is None:
