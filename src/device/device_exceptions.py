@@ -45,11 +45,11 @@ class InvalidYearDeviceError(DeviceError):
     :param min_year: Минимальный возможный год устройства.
     :param max_year: Максимальный возможный год устройства.
     """
-    def __init__(self, year: int, min_year: int = 1990, max_year: int = datetime.now().year):
+    def __init__(self, year: int, min_year: int, max_year: int):
         self.year = year
         self.min_year = min_year
         self.max_year = max_year
         super().__init__(
             f"Недопустимый год устройства: {self.year}. Допустимые года: "
-            f"От 1990 до нынешнего."
+            f"От {self.min_year} до {self.max_year}."
         )
