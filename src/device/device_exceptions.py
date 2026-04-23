@@ -1,6 +1,3 @@
-from datetime import datetime
-
-
 class DeviceError(Exception):
     """Базовое исключение для всех ошибок, связанных с Device."""
     pass
