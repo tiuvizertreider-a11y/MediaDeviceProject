@@ -159,12 +159,14 @@ class Review:
         :raises ValueError: Если список плюсов не list.
         :return: None.
         """
+        if not isinstance(pros, (list, type(None)):
+            raise ValueError('Список плюсов должно быть list.')
+        
         if pros is None:
             self.__pros = []
         elif isinstance(pros, list):
             self.__pros = pros.copy()
-        else:
-            raise ValueError('Список плюсов должно быть list.')
+            
 
     @property
     def cons(self) -> list[str]:
@@ -180,12 +182,13 @@ class Review:
         :raises ValueError: Если список минусов не list.
         :return: None.
         """
+        if not isinstance(cons, (list, type(None)):
+            raise ValueError('Список минусов должно быть list.')
+        
         if cons is None:
             self.__cons = []
         elif isinstance(cons, list):
             self.__cons = cons.copy()
-        else:
-            raise ValueError('Список минусов должно быть list.')
 
     @property
     def author(self) -> str:
