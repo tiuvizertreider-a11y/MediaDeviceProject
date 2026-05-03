@@ -9,3 +9,4 @@ from src.review.review import Review
 class TestReview(unittest.TestCase):
     def setUp(self):
         # self.review = Review(title='Test', ...)
+        pass

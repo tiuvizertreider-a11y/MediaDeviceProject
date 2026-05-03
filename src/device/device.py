@@ -2,21 +2,24 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any
 
-from src.device.category_device import CategoryDevice
-from src.device.device_exceptions import InvalidCategoryDeviceError, InvalidYearDeviceError
+from src.device.category import CategoryDevice
+from src.device.exceptions import InvalidCategoryDeviceError, InvalidYearDeviceError
 from src.review.review import Review
 
 
 class Device(ABC):
     """Модель устройства, на которого будет записан подробный обзор."""
 
-    def __init__(self, brand: str,
-                 model: str,
-                 category: CategoryDevice = CategoryDevice.SMARTPHONE,
-                 year: int | None = None,
-                 image: str | None = None,
-                 specs: dict | None = None,
-                 review: Review | None = None):
+    def __init__(
+        self,
+        brand: str,
+        model: str,
+        category: CategoryDevice = CategoryDevice.SMARTPHONE,
+        year: int | None = None,
+        image: str | None = None,
+        specs: dict | None = None,
+        review: Review | None = None,
+    ):
         """
         Инициализирует объект устройства.
 
@@ -37,11 +40,11 @@ class Device(ABC):
         """
         self.brand = brand
         self.model = model
-        self.category = category    # Обращение к сеттеру
-        self.year = year            # Обращение к сеттеру
-        self.image = image          # Обращение к сеттеру
-        self.specs = specs          # Обращение к сеттеру
-        self.review = review        # Обращение к сеттеру
+        self.category = category  # Обращение к сеттеру
+        self.year = year  # Обращение к сеттеру
+        self.image = image  # Обращение к сеттеру
+        self.specs = specs  # Обращение к сеттеру
+        self.review = review  # Обращение к сеттеру
 
     @property
     def category(self) -> str:
@@ -77,12 +80,13 @@ class Device(ABC):
         :return: None.
         """
         if not isinstance(new_year, int):
-            print('Год выпуска устройства должен быть int.')
+            print("Год выпуска устройства должен быть int.")
         elif new_year < 1990 or new_year > datetime.today().year:
-            print('Год выпуска устройства должен быть между 1990 года и настоящим временем.')
+            print(
+                "Год выпуска устройства должен быть между 1990 года и настоящим временем."
+            )
         else:
             self._year = new_year
-
 
     @property
     def image(self) -> str:
@@ -100,10 +104,10 @@ class Device(ABC):
         :return: None.
         """
         if not isinstance(new_image, str):
-            raise ValueError('new_image должно быть строкой.')
+            raise ValueError("new_image должно быть строкой.")
 
         if new_image is None:
-            self._image = '/'
+            self._image = "/"
         else:
             self._image = new_image
 
@@ -122,7 +126,7 @@ class Device(ABC):
         :return: None.
         """
         if not isinstance(new_specs, dict):
-            raise ValueError('new_specs должно быть словарем.')
+            raise ValueError("new_specs должно быть dict.")
 
         if new_specs is None:
             self._specs = {}
@@ -144,10 +148,9 @@ class Device(ABC):
         :return: None.
         """
         if not isinstance(new_review, (Review, type(None))):
-            raise ValueError('Новый обзор должен быть классом Review или None.')
+            raise ValueError("Новый обзор должен быть классом Review или None.")
 
         self._review = new_review
-
 
     @abstractmethod
     def get_device_type(self) -> str:
@@ -161,14 +164,18 @@ class Device(ABC):
 
     def __repr__(self) -> str:
         """Возвращает отчет об объекте."""
-        return (f'Device(brand={self.brand!r}, model={self.model!r}, category={self.category!r},'
-                f'year={self.year}, image={self.image!r}, specs={self.specs}, review={self.review})')
+        return (
+            f"Device(brand={self.brand!r}, model={self.model!r}, category={self.category!r},"
+            f"year={self.year}, image={self.image!r}, specs={self.specs}, review={self.review})"
+        )
 
     def __str__(self) -> str:
         """Возвращает строковое представление объекта."""
-        return (f'Info device:\n\tbrand={self.brand}\n\tmodel={self.model}'
-                f'\n\tcategory={self.category}\n\tyear={self.year}'
-                f'\n\timage={self.image}\n\tspecs={self.specs}\n\treview={self.review}')
+        return (
+            f"Info device:\n\tbrand={self.brand}\n\tmodel={self.model}"
+            f"\n\tcategory={self.category}\n\tyear={self.year}"
+            f"\n\timage={self.image}\n\tspecs={self.specs}\n\treview={self.review}"
+        )
 
     def add_spec(self, name: str, value: Any) -> None:
         """
@@ -179,9 +186,9 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
-        #TODO: Исправить на следующем занятии
+        # TODO: Исправить на следующем занятии
         if name not in self._specs:
-            raise ValueError(f'Ключ: {name} уже существует, и будет перезаписана.')
+            raise ValueError(f"Ключ: {name} уже существует, и будет перезаписана.")
         self._specs[name] = value
 
     def remove_spec(self, name: str) -> None:
@@ -195,7 +202,7 @@ class Device(ABC):
         if name in self._specs:
             del self._specs[name]
         else:
-            raise ValueError(f'Характеристика: {name} не найдена.')
+            raise ValueError(f"Характеристика: {name} не найдена.")
 
     @classmethod
     def from_dict(cls, data: dict, base_keys: list[str]) -> Device | None:
@@ -208,22 +215,22 @@ class Device(ABC):
         """
         # TODO: Разобрать на следующем занятии
         if not isinstance(data, dict):
-            raise ValueError(f'data должен быть словарем!')
+            raise ValueError(f"data должен быть dict!")
 
         for key in base_keys:
             if key not in data:
-                raise ValueError(f'Ключ должен быть из списка базовых ключей.')
+                raise ValueError(f"Ключ должен быть из списка базовых ключей.")
 
         review = None
-        if 'review' in data:
-            review = Review.from_dict(data['review'])
+        if "review" in data:
+            review = Review.from_dict(data["review"])
 
         return cls(
-            brand=data['brand'],
-            model=data['model'],
-            category=data['category'],
-            year=data.get('year'),
-            image=data.get('image'),
-            specs=data.get('specs'),
-            review=review
+            brand=data["brand"],
+            model=data["model"],
+            category=data["category"],
+            year=data.get("year"),
+            image=data.get("image"),
+            specs=data.get("specs"),
+            review=review,
         )

@@ -1,5 +1,6 @@
 class ReviewError(Exception):
     """Базовое исключение для всех ошибок, связанных с Review."""
+
     pass
 
 
@@ -12,9 +13,7 @@ class EmptyFieldReviewError(ReviewError):
 
     def __init__(self, field_name: str):
         self.field_name = field_name
-        super().__init__(
-            f"Поле: {self.field_name} не может быть пустым!"
-        )
+        super().__init__(f"Поле: {self.field_name} не может быть пустым!")
 
 
 class InvalidStatusReviewError(ReviewError):
@@ -33,6 +32,7 @@ class InvalidStatusReviewError(ReviewError):
             f"{", ".join(correct_status)}."
         )
 
+
 class IncorrectLengthFieldReviewError(ReviewError):
     """
     Ошибка некорректной длины поля обзора.
@@ -41,6 +41,7 @@ class IncorrectLengthFieldReviewError(ReviewError):
     :param length: Текущая длина поля.
     :param max_length: Максимальная длина поля.
     """
+
     def __init__(self, field_name: str, length: int, max_length: int):
         self.field_name = field_name
         self.length = length
@@ -57,8 +58,7 @@ class MissingRequiredFieldReviewError(ReviewError):
 
     :param field_name: Имя поля, переданное пользователем.
     """
+
     def __init__(self, field_name: str):
         self.field_name = field_name
-        super().__init__(
-            f"Пропущено обязательное поле: {self.field_name}."
-        )
+        super().__init__(f"Пропущено обязательное поле: {self.field_name}.")

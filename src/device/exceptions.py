@@ -1,5 +1,6 @@
 class DeviceError(Exception):
     """Базовое исключение для всех ошибок, связанных с Device."""
+
     pass
 
 
@@ -12,9 +13,7 @@ class EmptyFieldDeviceError(DeviceError):
 
     def __init__(self, field_name: str):
         self.field_name = field_name
-        super().__init__(
-            f"Поле: {self.field_name} не может быть пустым!"
-        )
+        super().__init__(f"Поле: {self.field_name} не может быть пустым!")
 
 
 class InvalidCategoryDeviceError(DeviceError):
@@ -42,6 +41,7 @@ class InvalidYearDeviceError(DeviceError):
     :param min_year: Минимальный возможный год устройства.
     :param max_year: Максимальный возможный год устройства.
     """
+
     def __init__(self, year: int, min_year: int, max_year: int):
         self.year = year
         self.min_year = min_year

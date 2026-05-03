@@ -3,6 +3,7 @@ from enum import StrEnum
 
 class CategoryDevice(StrEnum):
     """Инициализирует категорию устройства."""
+
     SMARTPHONE = "smartphone"
     HEADPHONE = "headphone"
     TABLET = "tablet"
