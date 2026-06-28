@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any
+from typing import Any, Self
 
 from src.device.category import CategoryDevice
 from src.device.exceptions import InvalidCategoryDeviceError, InvalidYearDeviceError
@@ -205,7 +205,7 @@ class Device(ABC):
             raise ValueError(f"Характеристика: {name} не найдена.")
 
     @classmethod
-    def from_dict(cls, data: dict, base_keys: list[str]) -> Device | None:
+    def from_dict(cls, data: dict, base_keys: list[str]) -> Self:
         """
         Создаёт экземпляр класса Device из словаря.
         :param data: Словарь с ключами: brand, model,
