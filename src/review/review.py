@@ -153,7 +153,7 @@ class Review:
         if new_date is None:
             self.__date = datetime.now()
         elif isinstance(new_date, datetime):
-            self.__date = datetime
+            self.__date = new_date
         else:
             raise ValueError("Дата публикации должна быть datetime.")
 
@@ -201,7 +201,7 @@ class Review:
         if cons is None:
             self.__cons = []
         elif isinstance(cons, list):
-            if all(isinstance(i, str) for i in cons):
+            if not all(isinstance(i, str) for i in cons):
                 raise TypeError("Каждый элемент списка минусов должен быть str.")
             self.__cons = cons.copy()
 
@@ -247,7 +247,7 @@ class Review:
         :return: None.
         """
         self.__validate_text(con_text, "con_text", max_length)
-        self.__pros.append(con_text)
+        self.__cons.append(con_text)
 
     @staticmethod
     def __validate_text(text: str, field_name: str, max_length: int):
