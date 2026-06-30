@@ -71,7 +71,7 @@ class Device(ABC):
         return self._year
 
     @year.setter
-    def year(self, new_year: int) -> None:
+    def year(self, new_year: int | None) -> None:
         """
         TODO: Кастомное исключение реализовать.
         Устанавливает значение для года выпуска устройства.
@@ -79,13 +79,17 @@ class Device(ABC):
         :raises: InvalidYearDeviceError.
         :return: None.
         """
-        if not isinstance(new_year, int):
-            print("Год выпуска устройства должен быть int.")
-        elif new_year < 1990 or new_year > datetime.today().year:
-            print(
-                "Год выпуска устройства должен быть между 1990 года и настоящим временем."
-            )
+        if not isinstance(new_year, (int, type(None))):
+            raise TypeError("Год выпуска устройства должен быть int или None.")
+
+        if new_year is None:
+            self._year = None
         else:
+            current_year = datetime.today().year
+
+            if new_year < 1990 or new_year > current_year:
+                raise InvalidYearDeviceError(new_year, 1990, current_year)
+
             self._year = new_year
 
     @property
@@ -103,8 +107,8 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
-        if not isinstance(new_image, str):
-            raise ValueError("new_image должно быть строкой.")
+        if not isinstance(new_image, (str, type(None))):
+            raise ValueError("new_image должно быть строкой или None.")
 
         if new_image is None:
             self._image = "/"
@@ -125,8 +129,8 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
-        if not isinstance(new_specs, dict):
-            raise ValueError("new_specs должно быть dict.")
+        if not isinstance(new_specs, (dict, type(None))):
+            raise ValueError("new_specs должно быть dict или None.")
 
         if new_specs is None:
             self._specs = {}
@@ -186,9 +190,6 @@ class Device(ABC):
         :raises: ValueError.
         :return: None.
         """
-        # TODO: Исправить на следующем занятии
-        if name not in self._specs:
-            raise ValueError(f"Ключ: {name} уже существует, и будет перезаписана.")
         self._specs[name] = value
 
     def remove_spec(self, name: str) -> None:
@@ -198,11 +199,10 @@ class Device(ABC):
         :param name: Ключ характеристики.
         :return: None.
         """
-        # TODO: Исправить на следующем занятии
-        if name in self._specs:
-            del self._specs[name]
-        else:
-            raise ValueError(f"Характеристика: {name} не найдена.")
+        try:
+            del self.specs[name]
+        except KeyError as ex:
+            raise KeyError(f"Характеристика: {name} не найдена.") from ex
 
     @classmethod
     def from_dict(cls, data: dict, base_keys: list[str]) -> Self:
