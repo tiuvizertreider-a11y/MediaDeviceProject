@@ -44,8 +44,8 @@ class TextTooLongError(ValidationError):
         self.max_length = max_length
         self.entity = entity
         super().__init__(
-            f"Поле: '{self.entity}.{self.field_name}' - превышена"
-            f" максимальная длина. Текущая длина: {self.value}. Максимальная: 200."
+            f"Длина поля: '{self.entity}.{self.field_name}' - превышена"
+            f" максимальная длина. Текущая длина: {self.value}. Максимальная: {self.max_length}."
         )
 
 
@@ -62,7 +62,6 @@ class MissingRequiredFieldError(ValidationError):
         self.entity = entity
         super().__init__(
             f"Поле: '{self.entity}.{self.field_name}'- отсутствует"
-            f" обязательное поле 'Review.title'."
         )
 
 
@@ -83,7 +82,8 @@ class InvalidChoiceError(ValidationError):
         self.entity = entity
         super().__init__(
         f"В поле: '{self.entity}.{self.field_name}' - недопустимое"
-        f" значение 'Review.status: unknown'. Допустимые: '{self.allowed}'."
+        f" значение: '{self.value}'. Допустимые: "
+        f"'{ "', '".join(self.allowed) }'."
     )
 
 
@@ -105,6 +105,7 @@ class YearOutOfRangeError(ValidationError):
         self.field_name = field_name
         self.entity = entity
         super().__init__(
-        f"Переданный год: '{self.year}' не попадает в допустимый"
+        f"В поле: '{self.entity}.{self.field_name}' переданный год: "
+        f"'{self.year}' - не попадает в допустимый"
         f" диапазон: {self.start_year}-{self.end_year}."
     )
