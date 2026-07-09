@@ -66,14 +66,9 @@ def validate_string_length(
     :raises EmptyFieldError: Если до этого две проверки не прошли,
         в normalized не сохранится text.strip().
     """
-    if text == '' or text is ' ':
-        raise EmptyFieldError(field_name, entity)
-    if len(text) > max_length:
+    normalized = validate_non_empty_string(text, field_name, entity)
+    if len(normalized) > max_length:
         raise TextTooLongError(text, field_name, max_length, entity)
-
-    normalized = text.strip()
-    if not normalized:
-        raise EmptyFieldError(field_name, entity)
 
     return normalized
 
