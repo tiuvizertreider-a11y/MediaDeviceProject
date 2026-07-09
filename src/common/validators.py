@@ -32,11 +32,8 @@ def validate_non_empty_string(
             f'В поле: {field_name}-{entity} ожидается тип данных: str.\n'
             f'Получен: "{type(value).__name__}"'
         )
-    if value == '' or value is ' ':
-        raise EmptyFieldError(field_name, entity)
-
-    normalized = value.strip()
-    if not normalized:
+        
+    if not (normalized := value.strip()):
         raise EmptyFieldError(field_name, entity)
 
     return normalized
