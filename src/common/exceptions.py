@@ -45,7 +45,7 @@ class TextTooLongError(ValidationError):
         self.entity = entity
         super().__init__(
             f"Длина поля: '{self.entity}.{self.field_name}' - превышена"
-            f" максимальная длина. Текущая длина: {self.value}. Максимальная: {self.max_length}."
+            f" максимальная длина. Текущая длина: {len(self.value)}. Максимальная: {self.max_length}."
         )
 
 
